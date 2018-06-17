@@ -432,7 +432,8 @@ article .container {
 }
 #app-container .inner-table .flights-table .event-container .event-low,
 #app-container .inner-table .flights-table .event-container .event-medium,
-#app-container .inner-table .flights-table .event-container .event-high {
+#app-container .inner-table .flights-table .event-container .event-high,
+#app-container .inner-table .flights-table .event-container .event-outdated {
   position: relative;
   margin: 5px;
   float: right;
@@ -453,6 +454,7 @@ article .container {
 .event-low,
 .event-medium,
 .event-high,
+.event-outdated,
 .additional-events-marker {
   margin: 1px;
   padding: 7px;
@@ -467,6 +469,9 @@ article .container {
 }
 .event-high {
   background-color: red;
+}
+.event-outdated {
+  background-color: gray;
 }
 .additional-events-marker {
   padding: 6px;
@@ -519,6 +524,7 @@ article .container {
   .event-low,
   .event-medium,
   .event-high,
+  .event-outdated,
   .additional-events-marker {
     height: 110px;
     margin: 0 4px;

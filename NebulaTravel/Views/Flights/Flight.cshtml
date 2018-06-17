@@ -1,11 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@model NebulaTravel.ViewModels.Flights.FlightsFlightViewModel
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" type="image/png" href="images/favicon.png">
-    <title>Flight</title>
+    <title>@Model.Flight.Name</title>
     <link rel="stylesheet" type="text/css" href="/styles/flight.css" />
 </head>
 <body>
@@ -13,20 +15,19 @@
         @Html.Partial("_Header");
         <article>
             <div class="container">
-                <div class="img-container"></div>
+                <div class="img-container" style='background-image: url("");'></div>
                 <div class="h-container">
-                    <h1>Journey to the Moon</h1>
+                    <h1>@Model.Flight.Name</h1>
                 </div>
                 <div class="text-container">
                     <section>
                         <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.Rem repellat, fugiat unde ipsum, alias, aperiam odit voluptatem vitae sed neque quibusdam est. Similique, corporis, atque, veniam possimus hic voluptatibus exercitationem enim consequuntur molestias voluptate repudiandae. Repellat culpa nemo at quidem, architecto error eligendi autem veritatis, veniam asperiores ipsa, alias doloribus.
+                            @Model.Flight.Description
                         </p>
-                        <a href="#"> Book flight</a>
                     </section>
                 </div>
             </div>
-            <button id="scrollToTopButton"> Up </button>
+            <button id="scrollToTopButton">Up</button>
         </article>
         <div id="space"></div>
     </main>

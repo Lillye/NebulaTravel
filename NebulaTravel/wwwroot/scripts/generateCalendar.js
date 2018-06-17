@@ -26,14 +26,19 @@
             const link = document.createElement("a");
             s.classList.add("event-container");
             pHeader.innerHTML = element["name"];
-            eventMarker.classList.add("event-" + element["available tickets"]);
+            if (eventTarget.happened == false) {
+                eventMarker.classList.add("event-" + element["availableTickets"]);
+            }
+            else {
+                eventMarker.classList.add("event-outdated");
+            }
             eventMarker.classList.add("inner-event-marker");
-            p.innerHTML = element["description"];
+            p.innerHTML = element["overview"];
             link.innerHTML = "Read More";
-            link.setAttribute("href", element["flightLink"]);
-            if (element["img-url"]) {
+            link.setAttribute("href", "Flight?="+element["flightId"]);
+            if (element["picture"]) {
                 const img = document.createElement("div");
-                img.style.backgroundImage = "url(" + element["img-url"] + ")";
+                img.style.backgroundImage = "url(" + element["picture"] + ")";
                 s.appendChild(img);
             }
             s.appendChild(pHeader);
@@ -174,6 +179,7 @@
             cell.number = generatedCells;
             cell.row = generatedRows;
             cell.classList.add("day-container");
+            cell.happened = true;
             day.classList.add("day");
             events.classList.add("events");
             eventsTab.classList.add("flights-table");
@@ -183,16 +189,40 @@
                 cell.classList.add("today");
             }
 
-            var concatenatedDate = (i - firstMonthDay + 1) + "-" + (this.month + 1) + "-" + this.year;
-            for (let index = 0; index < data.flights.length; index++) {
-                if (data.flights[index]["date"] == concatenatedDate) {
+            var concatenatedDate = this.year + "-";
+            if ((this.month + 1) < 10) {
+                concatenatedDate += "0" + (this.month + 1) + "-";
+            }
+            else {
+                concatenatedDate += (this.month + 1) + "-";
+            }
+            if ((i - firstMonthDay + 1) < 10) {
+                concatenatedDate += "0" + (i - firstMonthDay + 1);
+            }
+            else {
+                concatenatedDate += (i - firstMonthDay + 1);
+            }
+            for (let index = 0; index < data.length; index++) {
+                if (data[index]["date"] == concatenatedDate) {
                     if (cell.eventsInDay < 3) {
                         const event = document.createElement("span");
-                        event.classList.add("event-" + data.flights[index]["available tickets"]);
+                        if (this.now.getFullYear() > this.year) {
+                            event.classList.add("event-outdated");
+                        }
+                        else if (this.now.getMonth() > this.month && this.now.getFullYear() == this.year) {
+                            event.classList.add("event-outdated");
+                        }
+                        else if (i - firstMonthDay + 1 < this.day && this.now.getMonth() == this.month && this.now.getFullYear() == this.year) {
+                            event.classList.add("event-outdated");
+                        }
+                        else {
+                            event.classList.add("event-" + data[index]["availableTickets"]);
+                            cell.happened = false;
+                        }
                         events.appendChild(event);
                     }
                     cell.eventsInDay++;
-                    cell.events.push(data.flights[index]);
+                    cell.events.push(data[index]);
                 }
             }
 
@@ -275,37 +305,36 @@
     };
 };
 
-var data = {
-    "flights": [
-        { "date": "3-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas. ", "flightLink": "Flight?id=1", "img-url": "/images/n1.jpg", "available tickets": "low" },
-        { "date": "3-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas. ", "flightLink": "Flight?id=1", "img-url": "/images/n1.jpg", "available tickets": "medium" },
-        { "date": "3-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas.  ", "flightLink": "Flight?id=1", "img-url": "/images/n1.jpg", "available tickets": "low" },
-        { "date": "4-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas. ", "flightLink": "Flight?id=1", "img-url": "/images/n1.jpg", "available tickets": "high" },
-        { "date": "4-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas.  ", "flightLink": "Flight?id=1", "img-url": "/images/n1.jpg", "available tickets": "medium" },
-        { "date": "2-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas. ", "flightLink": "Flight?id=1", "img-url": "/images/n1.jpg", "available tickets": "low" },
-        { "date": "2-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas.  ", "flightLink": "flight.html", "img-url": "/images/n1.jpg", "available tickets": "low" },
-        { "date": "2-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas. ", "img-url": "images/n1.jpg", "available tickets": "high" },
-        { "date": "2-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas.  ", "img-url": "images/n1.jpg", "available tickets": "low" },
-        { "date": "1-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas. ", "img-url": "images/n1.jpg", "available tickets": "low" },
-        { "date": "7-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas.  ", "img-url": "images/n1.jpg", "available tickets": "low" },
-        { "date": "11-4-2018", "name": "eventTwo", "available tickets": "medium" },
-        { "date": "11-4-2018", "name": "eventThree", "available tickets": "low" },
-        { "date": "15-4-2018", "name": "eventThree", "available tickets": "high" },
-        { "date": "15-4-2018", "name": "eventThree", "available tickets": "medium" },
-        { "date": "21-4-2018", "name": "eventThree", "available tickets": "medium" },
-        { "date": "22-4-2018", "name": "eventThree", "available tickets": "high" },
-        { "date": "22-4-2018", "name": "eventThree", "available tickets": "high" },
-        { "date": "22-4-2018", "name": "eventThree", "available tickets": "medium" },
-        { "date": "3-5-2018", "name": "eventThree", "available tickets": "medium" },
-        { "date": "5-5-2018", "name": "eventThree", "available tickets": "low" },
-    ]
-}
+//var data = {
+//    "flights": [
+//        { "date": "3-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas. ", "flightLink": "Flight?id=1", "img-url": "/images/n1.jpg", "available tickets": "low" },
+//        { "date": "3-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas. ", "flightLink": "Flight?id=1", "img-url": "/images/n1.jpg", "available tickets": "medium" },
+//        { "date": "3-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas.  ", "flightLink": "Flight?id=1", "img-url": "/images/n1.jpg", "available tickets": "low" },
+//        { "date": "4-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas. ", "flightLink": "Flight?id=1", "img-url": "/images/n1.jpg", "available tickets": "high" },
+//        { "date": "4-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas.  ", "flightLink": "Flight?id=1", "img-url": "/images/n1.jpg", "available tickets": "medium" },
+//        { "date": "2-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas. ", "flightLink": "Flight?id=1", "img-url": "/images/n1.jpg", "available tickets": "low" },
+//        { "date": "2-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas.  ", "flightLink": "flight.html", "img-url": "/images/n1.jpg", "available tickets": "low" },
+//        { "date": "2-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas. ", "img-url": "images/n1.jpg", "available tickets": "high" },
+//        { "date": "2-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas.  ", "img-url": "images/n1.jpg", "available tickets": "low" },
+//        { "date": "1-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas. ", "img-url": "images/n1.jpg", "available tickets": "low" },
+//        { "date": "7-4-2018", "name": "eventOne", "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam deserunt quae, beatae esse incidunt voluptatum iste, aliquam error, necessitatibus molestias excepturi facere quia non. Esse, animi eaque. Aliquam, quasi quas.  ", "img-url": "images/n1.jpg", "available tickets": "low" },
+//        { "date": "11-4-2018", "name": "eventTwo", "available tickets": "medium" },
+//        { "date": "11-4-2018", "name": "eventThree", "available tickets": "low" },
+//        { "date": "15-4-2018", "name": "eventThree", "available tickets": "high" },
+//        { "date": "15-4-2018", "name": "eventThree", "available tickets": "medium" },
+//        { "date": "21-4-2018", "name": "eventThree", "available tickets": "medium" },
+//        { "date": "22-4-2018", "name": "eventThree", "available tickets": "high" },
+//        { "date": "22-4-2018", "name": "eventThree", "available tickets": "high" },
+//        { "date": "22-4-2018", "name": "eventThree", "available tickets": "medium" },
+//        { "date": "3-5-2018", "name": "eventThree", "available tickets": "medium" },
+//        { "date": "5-5-2018", "name": "eventThree", "available tickets": "low" },
+//    ]
+//}
 
 fetch('data').then(response => {
     return response.json();
 }).then(data => {
-    console.log(data);
+    const anchor = document.querySelector('#app-container');
+    const cal = new Calendar(anchor, data);
+    cal.init();
 });
-const anchor = document.querySelector('#app-container');
-const cal = new Calendar(anchor, data);
-cal.init();

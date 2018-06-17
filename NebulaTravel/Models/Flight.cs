@@ -18,7 +18,7 @@ namespace NebulaTravel.Models
         public int AvailableTickets { get; set; }
 
         //virtual - lazy loading, change tracking
-        public virtual Destination Destination { get; set; }
+        public virtual Destination Destination { get; set; } //?
         public virtual Spaceship Spaceship { get; set; }
         public virtual ICollection<UserFlight> UserFlights { get; set; }
     }
