@@ -1,0 +1,14 @@
+﻿<header id="header-bar">
+    <h1><a asp-controller="Home" asp-action="Index">Nebula Travel</a></h1>
+    <div id="access-nav">
+        <div id="access-inner-box"></div>
+        <nav id="nav-holder" class="nav-closed">
+            <ol>
+                <li><a asp-controller="Flights" asp-action="Calendar">Flights</a></li>
+                <li><a asp-controller="Destinations" asp-action="List">Destinations</a></li>
+                <li><a asp-controller="Spaceships" asp-action="List">Spaceships</a></li>
+                <li id="log-in"><a asp-controller="User" asp-action="Login">Log in</a></li>
+            </ol>
+        </nav>
+    </div>
+</header>
