@@ -1,0 +1,35 @@
+﻿@import "Components/colors.less";
+@import "Components/fonts.less";
+@import "Components/desktop.less";
+@import "Components/mobile.less";
+
+.container a {
+    display: inline-block;
+    font-size: 1.1rem;
+    width: 100%;
+    margin-top: 10px;
+    padding: 5px;
+    text-align: right;
+    text-decoration: underline;
+    color: lighten(@secondary-color,15%);
+
+    &:hover {
+        color: mix(@secondary-color,blue);
+    }
+
+    &:active {
+        color: mix(@secondary-color,lighten(blue,15%));
+    }
+}
+
+form {
+    font-size: 1.1rem;
+    text-align: left;
+    input, button {
+        box-sizing: border-box;
+        width: 100%;
+        height: 35px;
+        margin: 5px;
+        border-radius: 3px;
+    }
+}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +30,20 @@ namespace NebulaTravel
         {
             services.AddDbContext<NebulaDbContext>(
                 options => options.UseSqlServer(configuration.GetConnectionString("SqlConnection")));
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                {
+                    options.LoginPath = "/User/Login";
+                    options.LogoutPath = "/User/Logout";
+                });
             services.AddMvc();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            });
+            services.AddTransient(
+                m => new UserManager()
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +58,7 @@ namespace NebulaTravel
             // app.UseRewriter(new RewriteOptions().AddRedirectToHttpsPermanent());
 
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

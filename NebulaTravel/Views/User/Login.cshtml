@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" type="image/png" href="images/favicon.png">
-    <title>Flight</title>
-    <link rel="stylesheet" type="text/css" href="/styles/flight.css" />
+    <title>Log in</title>
+    <link rel="stylesheet" type="text/css" href="/styles/form.css" />
 </head>
 <body>
     <main>
@@ -19,9 +19,16 @@
                 </div>
                 <div class="text-container">
                     <section>
-                        <p>
-                            Log-in form
-                        </p>
+                        <form asp-controller="User" asp-action="Login" method="post">
+                            Email:
+                            <input type="email" required
+                                   id="Email" name="Email" value="" placeholder="john.smith@gmail.com" /> <br>
+                            Password:
+                            <input type="password" required
+                                   id="Password" name="Password" /><br>
+                            <button type="submit">Log in</button>
+                        </form>
+                        <a href="Register" style="text-align:left">Create an account</a>
                     </section>
                 </div>
             </div>
