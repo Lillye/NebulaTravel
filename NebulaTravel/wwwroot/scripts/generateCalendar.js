@@ -147,12 +147,14 @@
             tab.appendChild(eventsCell);
         }
 
+        var offset = 0;
         for (let i = 0; i < firstMonthDay; i++) {
             const cell = document.createElement("div");
             cell.classList.add("empty-day-container");
             cell.innerHTML = "";
             row.appendChild(cell);
             generatedCells++;
+            offset++;
         }
 
         for (let i = firstMonthDay; i < j; i++) {
@@ -176,7 +178,7 @@
             cell.dayNr = i - firstMonthDay + 1;
             cell.eventsInDay = 0;
             cell.events = [];
-            cell.number = generatedCells;
+            cell.number = generatedCells - offset;
             cell.row = generatedRows;
             cell.classList.add("day-container");
             cell.happened = true;

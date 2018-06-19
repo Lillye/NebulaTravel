@@ -8,10 +8,7 @@ namespace NebulaTravel.ViewModels.Users
 {
     public class UserFlightEditModel
     {
-        public int UserId { get; set; }
-        public int FlightId { get; set; }
-
-        public virtual User User { get; set; }
-        public virtual Flight Flight { get; set; }
+        public int Id { get; set; }
+        public int Password { get; set; }
     }
 }

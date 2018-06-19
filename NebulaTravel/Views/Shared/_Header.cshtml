@@ -7,7 +7,14 @@
                 <li><a asp-controller="Flights" asp-action="Calendar">Flights</a></li>
                 <li><a asp-controller="Destinations" asp-action="List">Destinations</a></li>
                 <li><a asp-controller="Spaceships" asp-action="List">Spaceships</a></li>
-                <li id="log-in"><a asp-controller="User" asp-action="Login">Log in</a></li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li id="log-in"><a asp-controller="User" asp-action="Logout">Log out</a></li>
+                }
+                else
+                {
+                    <li id="log-in"><a asp-controller="User" asp-action="Login">Log in</a></li>
+                }
             </ol>
         </nav>
     </div>
