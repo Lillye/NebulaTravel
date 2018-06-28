@@ -50,7 +50,7 @@ namespace NebulaTravel.Migrations
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     Login = table.Column<string>(nullable: true),
-                    PasswordHashCode = table.Column<int>(nullable: false)
+                    PasswordHashCode = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

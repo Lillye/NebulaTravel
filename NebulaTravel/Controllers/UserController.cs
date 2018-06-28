@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 using NebulaTravel.Data;
 using NebulaTravel.Models;
@@ -36,16 +40,28 @@ namespace NebulaTravel.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = context.Users.FirstOrDefault(u => u.Login == model.Email && u.PasswordHashCode == model.Password);
-                if (user != null)
+                User user = context.Users.FirstOrDefault(u => u.Login == model.Email);
+                string[] parts = new string[2];
+                parts = user.PasswordHashCode.Split(" : ");
+                string salt = parts[0];
+                string password = parts[1];
+                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                    password: model.Password,
+                    salt: Encoding.BigEndianUnicode.GetBytes(salt),
+                    prf: KeyDerivationPrf.HMACSHA1,
+                    iterationCount: 10000,
+                    numBytesRequested: 256 / 8));
+
+                if (password.Equals(hashed))
                 {
                     manager.SignIn(this.HttpContext, user);
+                    if (!string.IsNullOrEmpty(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    return RedirectToAction("Index", "Home");
                 }
-                if (!string.IsNullOrEmpty(returnUrl))
-                {
-                    return Redirect(returnUrl);
-                }
-                return RedirectToAction("Index","Home");
+                return View();
             }
             else
                 return View();
@@ -70,13 +86,31 @@ namespace NebulaTravel.Controllers
             if (ModelState.IsValid)
             {
                 var names = model.FullName.Split(" ");
+
+                // generate a 128-bit salt using a secure PRNG
+                byte[] salt = new byte[128 / 8];
+                using (var rng = RandomNumberGenerator.Create())
+                {
+                    rng.GetBytes(salt);
+                }
+
+
+                // derive a 256-bit subkey (use HMACSHA1 with 10,000 iterations)
+                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                    password: model.Password,
+                    salt: salt,
+                    prf: KeyDerivationPrf.HMACSHA1,
+                    iterationCount: 10000,
+                    numBytesRequested: 256 / 8));
+
                 User newUser = new User()
                 {
                     FirstName = names[0],
                     LastName = names[1],
                     Login = model.Email, // do zmiany na email w bazie danych
-                    PasswordHashCode = model.Password // w praktyce używa się znacznie bardziej rozbudowanych hashowań - zmienić
+                    PasswordHashCode = Encoding.BigEndianUnicode.GetString(salt) + " : " + hashed // w praktyce używa się znacznie bardziej rozbudowanych hashowań - zmienić
                 };
+                
                 context.Users.Add(newUser);
                 context.SaveChanges();
                 return RedirectToAction("Login");

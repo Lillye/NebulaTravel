@@ -9,6 +9,6 @@ namespace NebulaTravel.ViewModels.Users
     public class UserFlightEditModel
     {
         public int Id { get; set; }
-        public int Password { get; set; }
+        public string Password { get; set; }
     }
 }

@@ -95,7 +95,7 @@ namespace NebulaTravel.Migrations
 
                     b.Property<string>("Login");
 
-                    b.Property<int>("PasswordHashCode");
+                    b.Property<string>("PasswordHashCode");
 
                     b.HasKey("UserId");
 

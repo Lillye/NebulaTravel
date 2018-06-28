@@ -11,7 +11,7 @@ using System;
 namespace NebulaTravel.Migrations
 {
     [DbContext(typeof(NebulaDbContext))]
-    [Migration("20180613162542_InitialCreate")]
+    [Migration("20180628191856_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,7 +96,7 @@ namespace NebulaTravel.Migrations
 
                     b.Property<string>("Login");
 
-                    b.Property<int>("PasswordHashCode");
+                    b.Property<string>("PasswordHashCode");
 
                     b.HasKey("UserId");
 
