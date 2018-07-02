@@ -15,6 +15,7 @@ namespace NebulaTravel.Models
         public string Picture { get; set; }
         public string Overview { get; set; }
         public string Description { get; set; }
+        //public string Distance { get; set; }
 
         public ICollection<Flight> Flights { get; set; }
     }

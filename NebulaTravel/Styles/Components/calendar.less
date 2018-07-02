@@ -3,6 +3,25 @@
 article {
     .container {
         background-color: fade(@primary-color, @calendar-fade + 40%);
+        #loader {
+            margin: auto;
+            border: 16px solid rgba(0,0,0,0);
+            border-top: 16px solid #100d34;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        }
     }
 }
 
@@ -195,19 +214,19 @@ article {
 }
 
 .event-low {
-    background-color: green;
+    background-color: rgba(76, 255, 0, 0.4);
 }
 
 .event-medium {
-    background-color: yellow;
+    background-color: rgba(255, 216, 0, 0.6);
 }
 
 .event-high {
-    background-color: red;
+    background-color: rgba(245, 10, 0, 0.4);
 }
 
 .event-outdated {
-    background-color: gray;
+    background-color: rgba(128, 128, 128, 0.4);
 }
 
 .additional-events-marker {

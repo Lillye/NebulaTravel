@@ -30,7 +30,14 @@ namespace NebulaTravel.Controllers
 
         public IActionResult Destination(int id)
         {
-            Destination model = context.Destinations.FirstOrDefault(d => d.DestinationId == id);
+            DateTime today = DateTime.Today;
+            Destination destination = context.Destinations.FirstOrDefault(d => d.DestinationId == id);
+            Flight flight = context.Flights.FirstOrDefault(f => f.Destination == destination && f.Date>=today);
+            DestinationsDestinationViewModel model = new DestinationsDestinationViewModel()
+            {
+                Flight = flight,
+                Destination = destination
+            };
             return View(model);
         }
     }

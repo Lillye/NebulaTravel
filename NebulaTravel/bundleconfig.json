@@ -1,0 +1,58 @@
+﻿[
+  {
+    "outputFileName": "wwwroot/styles/index.min.css",
+    "inputFiles": [
+      "wwwroot/styles/index.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/styles/flights.min.css",
+    "inputFiles": [
+      "wwwroot/styles/flights.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/styles/flight.min.css",
+    "inputFiles": [
+      "wwwroot/styles/flight.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/styles/planets.min.css",
+    "inputFiles": [
+      "wwwroot/styles/planets.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/styles/form.min.css",
+    "inputFiles": [
+      "wwwroot/styles/form.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/styles/spaceships.min.css",
+    "inputFiles": [
+      "wwwroot/styles/spaceships.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/scripts/calendar.min.js",
+    "inputFiles": [
+      "wwwroot/scripts/generateCalendar.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/scripts/site.min.js",
+    "inputFiles": [
+      "wwwroot/scripts/hideNavBar.js",
+      "wwwroot/scripts/showNavMobile.js",
+      "wwwroot/scripts/scrollToTopButton.js",
+      "wwwroot/scripts/keepAnimationProgress.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
+]

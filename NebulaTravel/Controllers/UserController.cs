@@ -76,7 +76,9 @@ namespace NebulaTravel.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            return View();
+            UserRegisterViewModel model = new UserRegisterViewModel();
+            model.EmailAvailable = true;
+            return View(model);
         }
 
         [HttpPost]
@@ -85,6 +87,14 @@ namespace NebulaTravel.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = context.Users.FirstOrDefault(u => u.Login == model.Email);
+                if (user != null)
+                {
+                    UserRegisterViewModel m = new UserRegisterViewModel();
+                    m.EmailAvailable = false;
+                    return View(m);
+                }
+
                 var names = model.FullName.Split(" ");
 
                 // generate a 128-bit salt using a secure PRNG
@@ -93,7 +103,6 @@ namespace NebulaTravel.Controllers
                 {
                     rng.GetBytes(salt);
                 }
-
 
                 // derive a 256-bit subkey (use HMACSHA1 with 10,000 iterations)
                 string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
@@ -110,20 +119,29 @@ namespace NebulaTravel.Controllers
                     Login = model.Email, // do zmiany na email w bazie danych
                     PasswordHashCode = Encoding.BigEndianUnicode.GetString(salt) + " : " + hashed // w praktyce używa się znacznie bardziej rozbudowanych hashowań - zmienić
                 };
-                
+
                 context.Users.Add(newUser);
                 context.SaveChanges();
                 return RedirectToAction("Login");
             }
             else
-                return View();
+            {
+                UserRegisterViewModel m = new UserRegisterViewModel();
+                m.EmailAvailable = true;
+                return View(m);
+            }
         }
 
         [HttpGet]
         [Authorize]
         public IActionResult Book(int id)
         {
-            Flight model = context.Flights.FirstOrDefault(f => f.FlightId == id);
+            Flight flight = context.Flights.FirstOrDefault(f => f.FlightId == id);
+            UserBookViewModel model = new UserBookViewModel()
+            {
+                Flight = flight,
+                IncorrectPassword = false
+            };
             return View(model);
         }
 
@@ -134,11 +152,35 @@ namespace NebulaTravel.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (context.Users.FirstOrDefault(u => u.PasswordHashCode == model.Password) != null)
+                var flight = context.Flights.FirstOrDefault(f => f.FlightId == model.Id);
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var user = context.Users.FirstOrDefault(u => u.UserId == userId);
+                string[] parts = new string[2];
+                parts = user.PasswordHashCode.Split(" : ");
+                string salt = parts[0];
+                string password = parts[1];
+                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                    password: model.Password,
+                    salt: Encoding.BigEndianUnicode.GetBytes(salt),
+                    prf: KeyDerivationPrf.HMACSHA1,
+                    iterationCount: 10000,
+                    numBytesRequested: 256 / 8));
+
+                if (password.Equals(hashed))
                 {
-                    var flight = context.Flights.FirstOrDefault(f => f.FlightId == model.Id);
-                    var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                    var user = context.Users.FirstOrDefault(u => u.UserId == userId);
+                    if (flight.AvailableTickets > 0)
+                    {
+                        flight.AvailableTickets--;
+                    }
+                    else
+                    {
+                        UserBookViewModel m = new UserBookViewModel()
+                        {
+                            Flight = flight,
+                            TicketsAvailable = false
+                        };
+                        return View(m);
+                    }
                     UserFlight newUserFlight = new UserFlight()
                     {
                         UserId = userId,
@@ -150,10 +192,20 @@ namespace NebulaTravel.Controllers
                     context.SaveChanges();
                     return RedirectToAction("Flight", "Flights", new { id = model.Id });
                 }
-                return View();
+                else
+                {
+                    UserBookViewModel m = new UserBookViewModel()
+                    {
+                        Flight = flight,
+                        IncorrectPassword = true,
+                    };
+                    return View(m);
+                }
             }
             else
-                return View();
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }

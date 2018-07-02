@@ -336,6 +336,7 @@
 fetch('data').then(response => {
     return response.json();
 }).then(data => {
+    document.getElementById("loader").style.display = "none";
     const anchor = document.querySelector('#app-container');
     const cal = new Calendar(anchor, data);
     cal.init();

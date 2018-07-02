@@ -1,4 +1,4 @@
-﻿@model NebulaTravel.Models.Destination
+﻿@model NebulaTravel.ViewModels.Destinations.DestinationsDestinationViewModel
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,24 +7,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" type="image/png" href="/images/favicon.png">
-    <title>@Model.Name</title>
-    <link rel="stylesheet" type="text/css" href="/styles/spaceships.css" />
+    <title>@Model.Destination.Name</title>
+    <link rel="stylesheet" type="text/css" href="/styles/spaceships.min.css" />
 </head>
 <body>
     <main>
         @Html.Partial("_Header")
         <article>
             <div class="container">
-                <div class="img-container" style='background-image: url("../images/destinations/@Model.Picture");'></div>
+                <div class="img-container" style='background-image: url("../images/destinations/@Model.Destination.Picture");'></div>
                 <div class="h-container">
-                    <h1>@Model.Name</h1>
+                    <h1>@Model.Destination.Name</h1>
                 </div>
                 <div class="text-container">
                     <section>
                         <p>
-                            @Model.Description
+                            @Model.Destination.Description
                         </p>
                     </section>
+                    @if (Model.Flight != null)
+                    {
+                        <a href="/Flights/Flight?id=@Model.Flight.FlightId">Check nearest flight</a>
+                    }
+                    else
+                    {
+                        <p style="text-align:right;">No flights scheduled now</p>
+                    }
+
                 </div>
             </div>
             <button id="scrollToTopButton">Up</button>

@@ -1,4 +1,4 @@
-﻿@model NebulaTravel.Models.Flight
+﻿@model NebulaTravel.ViewModels.Users.UserBookViewModel
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,26 +7,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" type="image/png" href="/images/favicon.png">
-    <title>Book place for @Model.Name</title>
-    <link rel="stylesheet" type="text/css" href="/styles/form.css" />
+    <title>Book place for @Model.Flight.Name</title>
+    <link rel="stylesheet" type="text/css" href="/styles/form.min.css" />
 </head>
 <body>
     <main>
         @Html.Partial("_Header")
-        <article>
+        <article style="height:100vh">
             <div class="container">
                 <div class="img-container" style='background-image: url("/images/a1.jpg");'></div>
                 <div class="h-container">
-                    <h1>Book place for @Model.Name</h1>
+                    <h1>Book place for @Model.Flight.Name</h1>
                 </div>
                 <div class="text-container">
                     <section>
-                        <form asp-controller="User" asp-action="Book" asp-route-id="@Model.FlightId" method="post">
+                        @if (Model.TicketsAvailable)
+                        {
+                            if (Model.IncorrectPassword)
+                            {
+                                <p style="color: red">Incorrect password</p>
+                            }
+                         <form asp-controller="User" asp-action="Book" asp-route-id="@Model.Flight.FlightId" method="post">
                             Please enter your password to confirm:
                             <input type="password" required
                                    id="Password" name="Password" /><br>
                             <button type="submit">Book Flight</button>
-                        </form>
+                         </form>
+                        }
+                        else
+                        {
+                            <p style="color: red">No more tickets available</p>
+                        }
                     </section>
                 </div>
             </div>
