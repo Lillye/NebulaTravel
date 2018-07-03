@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model NebulaTravel.ViewModels.Users.UserLoginViewModel
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,6 +21,10 @@
                 </div>
                 <div class="text-container">
                     <section>
+                        @if (Model.IncorrectLoginData)
+                        {
+                        <p style="color: red; margin-bottom: 10px;">Incorrect email or password</p>
+                        }
                         <form asp-controller="User" asp-action="Login" asp-route-returnUrl="@ViewBag.ReturnUrl" method="post">
                             Email:
                             <input type="email" required

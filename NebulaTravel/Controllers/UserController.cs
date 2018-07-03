@@ -31,7 +31,8 @@ namespace NebulaTravel.Controllers
 
         public IActionResult Login()
         {
-            return View();
+            UserLoginViewModel m = new UserLoginViewModel();
+            return View(m);
         }
 
         [HttpPost]
@@ -41,30 +42,48 @@ namespace NebulaTravel.Controllers
             if (ModelState.IsValid)
             {
                 User user = context.Users.FirstOrDefault(u => u.Login == model.Email);
-                string[] parts = new string[2];
-                parts = user.PasswordHashCode.Split(" : ");
-                string salt = parts[0];
-                string password = parts[1];
-                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                    password: model.Password,
-                    salt: Encoding.BigEndianUnicode.GetBytes(salt),
-                    prf: KeyDerivationPrf.HMACSHA1,
-                    iterationCount: 10000,
-                    numBytesRequested: 256 / 8));
-
-                if (password.Equals(hashed))
+                if (user != null)
                 {
-                    manager.SignIn(this.HttpContext, user);
-                    if (!string.IsNullOrEmpty(returnUrl))
+                    string[] parts = new string[2];
+                    parts = user.PasswordHashCode.Split(" : ");
+                    string salt = parts[0];
+                    string password = parts[1];
+                    string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                        password: model.Password,
+                        salt: Encoding.BigEndianUnicode.GetBytes(salt),
+                        prf: KeyDerivationPrf.HMACSHA1,
+                        iterationCount: 10000,
+                        numBytesRequested: 256 / 8));
+
+                    if (password.Equals(hashed))
                     {
-                        return Redirect(returnUrl);
+                        manager.SignIn(this.HttpContext, user);
+                        if (!string.IsNullOrEmpty(returnUrl))
+                        {
+                            return Redirect(returnUrl);
+                        }
+                        return RedirectToAction("Index", "Home");
                     }
-                    return RedirectToAction("Index", "Home");
+                    else
+                    {
+                        UserLoginViewModel m = new UserLoginViewModel();
+                        m.IncorrectLoginData = true;
+                        return View(m);
+                    }
                 }
-                return View();
+                else
+                {
+                    UserLoginViewModel m = new UserLoginViewModel();
+                    m.IncorrectLoginData = true;
+                    return View(m);
+                }
             }
             else
-                return View();
+            {
+                UserLoginViewModel m = new UserLoginViewModel();
+                m.IncorrectLoginData = true;
+                return View(m);
+            }
         }
 
         public IActionResult Logout()

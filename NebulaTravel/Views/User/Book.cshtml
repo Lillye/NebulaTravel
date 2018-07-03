@@ -25,7 +25,7 @@
                         {
                             if (Model.IncorrectPassword)
                             {
-                                <p style="color: red">Incorrect password</p>
+                                <p style="color: red; margin-bottom: 10px;">Incorrect password</p>
                             }
                          <form asp-controller="User" asp-action="Book" asp-route-id="@Model.Flight.FlightId" method="post">
                             Please enter your password to confirm:
