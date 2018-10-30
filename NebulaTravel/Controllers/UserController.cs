@@ -106,7 +106,7 @@ namespace NebulaTravel.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = context.Users.FirstOrDefault(u => u.Login == model.Email);
+                var user = context.Users.FirstOrDefault(u => u.Email == model.Email);
                 if (user != null)
                 {
                     UserRegisterViewModel m = new UserRegisterViewModel();
@@ -135,7 +135,7 @@ namespace NebulaTravel.Controllers
                 {
                     FirstName = names[0],
                     LastName = names[1],
-                    Login = model.Email, // do zmiany na email w bazie danych
+                    Email = model.Email, // do zmiany na email w bazie danych
                     PasswordHashCode = Encoding.BigEndianUnicode.GetString(salt) + " : " + hashed // w praktyce używa się znacznie bardziej rozbudowanych hashowań - zmienić
                 };
 

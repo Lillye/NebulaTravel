@@ -31,7 +31,7 @@ namespace NebulaTravel
 
             claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()));
             claims.Add(new Claim(ClaimTypes.Name, user.FirstName));
-            claims.Add(new Claim(ClaimTypes.Email, user.Login));
+            claims.Add(new Claim(ClaimTypes.Email, user.Email));
             claims.AddRange(this.GetUserRoleClaims(user));
             return claims;
         }

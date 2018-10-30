@@ -105,6 +105,22 @@ article .container .img-container {
 article .container .text-container {
   padding: 20px 2vw;
 }
+article .container a {
+  display: inline-block;
+  font-size: 1.1rem;
+  width: 100%;
+  margin-top: 10px;
+  padding: 5px;
+  text-align: right;
+  text-decoration: underline;
+  color: rgba(255, 255, 255, 0.9);
+}
+article .container a:hover {
+  color: rgba(106, 115, 253, 0.95);
+}
+article .container a:active {
+  color: rgba(148, 157, 253, 0.95);
+}
 article #scrollToTopButton {
   cursor: pointer;
   display: block;
@@ -288,20 +304,4 @@ footer:hover {
   footer {
     display: none;
   }
-}
-.container a {
-  display: inline-block;
-  font-size: 1.1rem;
-  width: 100%;
-  margin-top: 10px;
-  padding: 5px;
-  text-align: right;
-  text-decoration: underline;
-  color: rgba(255, 255, 255, 0.9);
-}
-.container a:hover {
-  color: rgba(106, 115, 253, 0.95);
-}
-.container a:active {
-  color: rgba(148, 157, 253, 0.95);
 }
