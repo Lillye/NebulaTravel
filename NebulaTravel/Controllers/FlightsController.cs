@@ -9,6 +9,12 @@ using NebulaTravel.ViewModels.Flights;
 
 namespace NebulaTravel.Controllers
 {
+    public enum AvaliableTickets
+    {
+        LowThreshold = 50,
+        HighThreshold = 150
+    }
+
     [Route("[controller]/[action]")]
     public class FlightsController : Controller
     {
@@ -33,14 +39,18 @@ namespace NebulaTravel.Controllers
             foreach (var flight in flights)
             {
                 // wyliczanie stanu powinno odbywać się z na podstawie sprawdzenia liczby miejsc dostępnych na statku powiązanym z lotem
-                string availableTickets = "low";
-                if (flight.AvailableTickets >= 50)
+                string availableTickets;
+                if (flight.AvailableTickets < (int)AvaliableTickets.LowThreshold)
                 {
-                    availableTickets = "medium";
+                    availableTickets = "low";
                 }
-                if(flight.AvailableTickets >= 150)
+                else if(flight.AvailableTickets >= (int)AvaliableTickets.HighThreshold)
                 {
                     availableTickets = "high";
+                }
+                else
+                {
+                    availableTickets = "medium";
                 }
                 FlightJSON entry = new FlightJSON()
                 {

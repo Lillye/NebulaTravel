@@ -13,7 +13,7 @@ namespace NebulaTravel.Models
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Login { get; set; } // zmiana na email
+        public string Email { get; set; } 
         public string PasswordHashCode { get; set; }
 
         public virtual ICollection<UserFlight> UserFlights { get; set; }

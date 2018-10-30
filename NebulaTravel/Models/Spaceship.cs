@@ -15,6 +15,13 @@ namespace NebulaTravel.Models
         public string Picture { get; set; }
         public string Overview { get; set; }
         public string Description { get; set; }
+        public string Length { get; set; }
+        public string TotalMass { get; set; }
+        public int CrewCapacity { get; set; }
+        public int PassengerCapacity { get; set; }
+        public string Engines { get; set; }
+        public string Constructor { get; set; }
+        public DateTime FirstLaunch { get; set; }
 
         public ICollection<Flight> Flights { get; set; }
     }

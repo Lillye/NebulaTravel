@@ -41,7 +41,7 @@ namespace NebulaTravel.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = context.Users.FirstOrDefault(u => u.Login == model.Email);
+                User user = context.Users.FirstOrDefault(u => u.Email == model.Email);
                 if (user != null)
                 {
                     string[] parts = new string[2];
