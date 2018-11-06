@@ -1,8 +1,20 @@
 ﻿[
   {
+    "outputFileName": "wwwroot/styles/basic.min.css",
+    "inputFiles": [
+      "wwwroot/styles/basic.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/styles/index.min.css",
     "inputFiles": [
       "wwwroot/styles/index.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/styles/calendar.min.css",
+    "inputFiles": [
+      "wwwroot/styles/calendar.css"
     ]
   },
   {
