@@ -12,6 +12,7 @@ namespace NebulaTravel.Data
         public NebulaDbContext(DbContextOptions<NebulaDbContext> options)
             : base(options)
         {
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public DbSet<User> Users { get; set; }
