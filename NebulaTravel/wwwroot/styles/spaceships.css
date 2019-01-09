@@ -18,3 +18,21 @@ article .container a:active {
 article .container .img-container {
   height: 270px;
 }
+#table {
+  display: flex;
+}
+#table ul {
+  margin-top: 15px;
+}
+#table ul li {
+  margin: 10px 5px 10px 30px;
+}
+#table #col-left {
+  flex: 25%;
+}
+#table #col-right {
+  flex: 75%;
+}
+#table #col-right ul li {
+  margin: 10px 0px;
+}

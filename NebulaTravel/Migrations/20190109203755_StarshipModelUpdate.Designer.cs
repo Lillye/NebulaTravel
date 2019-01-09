@@ -11,9 +11,10 @@ using System;
 namespace NebulaTravel.Migrations
 {
     [DbContext(typeof(NebulaDbContext))]
-    partial class NebulaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190109203755_StarshipModelUpdate")]
+    partial class StarshipModelUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

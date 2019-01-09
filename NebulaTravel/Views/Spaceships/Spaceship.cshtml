@@ -26,6 +26,30 @@
                             @Model.Description
                         </p>
                     </section>
+                    <div id="table">
+                        <div id="col-left">
+                            <ul style="list-style-type: square;">
+                                <li>Constructor:</li>
+                                <li>Crew Capacity:</li>
+                                <li>Passenger Capacity:</li>
+                                <li>Length:</li>
+                                <li>Total Mass:</li>
+                                <li>Engines:</li>
+                                <li>First Launch:</li>
+                            </ul>
+                        </div>
+                        <div id="col-right">
+                            <ul style="list-style-type: none;">
+                                <li>@Model.Constructor</li>
+                                <li>@Model.CrewCapacity</li>
+                                <li>@Model.PassengerCapacity</li>
+                                <li>@Model.Length</li>
+                                <li>@Model.TotalMass</li>
+                                <li>@Model.Engines</li>
+                                <li>@Model.FirstLaunch.ToShortDateString()</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
             <button id="scrollToTopButton">Up</button>
